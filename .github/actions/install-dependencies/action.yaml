@@ -1,0 +1,13 @@
+name: Install Python dependencies
+
+runs:
+  using: "composite"
+  steps:
+      - name: Install Python dependencies
+        shell: bash
+        run: |
+          python -m virtualenv .venv
+          source .venv/bin/activate
+          pip install pipenv
+          pipenv install
+        working-directory: ${{ env.WORKDIR }}

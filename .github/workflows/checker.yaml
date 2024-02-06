@@ -1,0 +1,45 @@
+name: Appointment Checker
+
+on:
+  workflow_dispatch:
+#   schedule:
+#     - cron: '*/15 * * * *'
+
+env:
+  WORKDIR: "project/"
+  PYTHON_VERSION: 3.12
+  PIPENV_VENV_IN_PROJECT: 1
+  PIPENV_VERBOSITY: -1
+
+jobs:
+  build:
+    name: checker
+    runs-on: [self-hosted, ARM64]
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Install Python
+        uses: ./.github/actions/install-python
+        with:
+          python_version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install Python dependencies
+        uses: ./.github/actions/install-dependencies
+        id: dependencies
+
+      - name: Run script
+        run: |
+          source .venv/bin/activate
+          python main.py
+        working-directory: ${{ env.WORKDIR }}
+        env:
+          # secrets
+          SITE_URL: ${{ secrets.SITE_URL }}
+          PROVINCE: ${{ secrets.PROVINCE }}
+          OPTION_VALUE: ${{ secrets.OPTION_VALUE }}
+          USER_ID: ${{ secrets.USER_ID }}
+          USER_NAME: ${{ secrets.USER_NAME }}
+          TEXT_TO_PARSE: ${{ secrets.TEXT_TO_PARSE }}
+          # env
+          CHROME_DRIVER_PATH: "/usr/bin/chromedriver"

@@ -1,0 +1,24 @@
+name: Install Python
+
+inputs:
+  python_version:
+    default: '3.12'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup pyenv environment variables
+      shell: bash
+      run: |
+        PYENV_ROOT="$HOME/.pyenv"
+        PYENV_BIN="$PYENV_ROOT/bin"
+        PYENV_SHIMS="$PYENV_ROOT/shims"
+        echo "$PYENV_BIN" >> $GITHUB_PATH
+        echo "$PYENV_SHIMS" >> $GITHUB_PATH
+        echo "PYENV_ROOT=$PYENV_ROOT" >> $GITHUB_ENV
+
+    - name: Install Python
+      shell: bash
+      run: |
+        pyenv local ${{ inputs.python_version }}
+        python -m pip install virtualenv
