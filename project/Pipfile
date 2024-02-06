@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+PyYAML = "6.0.1"
+selenium = "4.16.0"
+webdriver-manager = "4.0.1"
+
+[dev-packages]
+black = "23.12.1"
+flake8 = "7.0.0"
+
+[requires]
+python_version = "3.12"
